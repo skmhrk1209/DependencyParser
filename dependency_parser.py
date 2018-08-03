@@ -39,7 +39,13 @@ def dependency_parser_model_fn(features, labels, mode):
 
     dense1 = tf.layers.dense(
         inputs=features["x"],
-        units=128,
+        units=1024,
+        activation=tf.nn.relu
+    )
+
+    dense2 = tf.layers.dense(
+        inputs=dense1,
+        units=1024,
         activation=tf.nn.relu
     )
 
@@ -49,7 +55,7 @@ def dependency_parser_model_fn(features, labels, mode):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     logits = tf.layers.dense(
-        inputs=dense1,
+        inputs=dense2,
         units=87
     )
 
