@@ -43,6 +43,11 @@ def dependency_parser_model_fn(features, labels, mode):
         activation=lambda x: tf.pow(x, tf.constant(3, dtype=tf.float64))
     )
 
+    dense1 = tf.layers.batch_normalization(
+        inputs=dense1,
+        training=mode == tf.estimator.ModeKeys.TRAIN
+    )
+
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     logits layer
     (-1, 1024) -> (-1, 10)
@@ -291,6 +296,9 @@ def main(unused_argv):
 
     train_data, train_labels = embed(train_sentences)
     eval_data, eval_labels = embed(eval_sentences)
+
+    print(train_data.shape)
+    print(eval_data.shape)
 
     run_config = tf.estimator.RunConfig().replace(
         session_config=tf.ConfigProto(device_count={'GPU': 1}))
