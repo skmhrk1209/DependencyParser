@@ -9,13 +9,14 @@ import argparse
 import collections
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--model", type=str,
-                    default="dependency_parser_model", help="model directory")
+parser.add_argument("--model", type=str, default="dependency_parser_model", help="model directory")
 parser.add_argument("--batch", type=int, default=100, help="batch size")
 parser.add_argument("--steps", type=int, default=10000, help="training steps")
 parser.add_argument('--train', action='store_true', help='with training')
 parser.add_argument('--eval', action='store_true', help='with evaluation')
 parser.add_argument('--predict', action='store_true', help='with prediction')
+parser.add_argument("--train_data", type=str, default="train.conll", help="training conll-format data")
+parser.add_argument("--eval_data", type=str, default="eval.conll", help="evaluation conll-format data")
 args = parser.parse_args()
 
 tf.logging.set_verbosity(tf.logging.INFO)
@@ -121,7 +122,7 @@ def main(unused_argv):
     train_sentences = [[Item(0, "", "", "", -1, [])]]
     eval_sentences = [[Item(0, "", "", "", -1, [])]]
 
-    with open("train.conll") as file:
+    with open(args.train_data) as file:
 
         for line in file:
 
@@ -136,7 +137,7 @@ def main(unused_argv):
 
                 train_sentences.append([Item(0, "", "", "", -1, [])])
 
-    with open("eval.conll") as file:
+    with open(args.eval_data) as file:
 
         for line in file:
 
