@@ -1,7 +1,5 @@
 import gensim
 
-import gensim
-
 tags = [[]]
 labels = [[]]
 

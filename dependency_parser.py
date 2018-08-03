@@ -23,7 +23,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 def dependency_parser_model_fn(features, labels, mode):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    dependency parser 
+    dependency parser model
     implementation of "A Fast and Accurate Dependency Parser"
     (https://cs.stanford.edu/~danqi/papers/emnlp2014.pdf)
 
@@ -40,13 +40,7 @@ def dependency_parser_model_fn(features, labels, mode):
     dense1 = tf.layers.dense(
         inputs=features["x"],
         units=1024,
-        activation=tf.nn.relu
-    )
-
-    dense2 = tf.layers.dense(
-        inputs=dense1,
-        units=1024,
-        activation=tf.nn.relu
+        activation=lambda x: tf.pow(x, tf.constant(3, dtype=tf.float32))
     )
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -55,7 +49,7 @@ def dependency_parser_model_fn(features, labels, mode):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     logits = tf.layers.dense(
-        inputs=dense2,
+        inputs=dense1,
         units=87
     )
 
