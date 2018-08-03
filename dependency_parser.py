@@ -49,7 +49,7 @@ def dependency_parser_model_fn(features, labels, mode):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     logits = tf.layers.dense(
-        inputs=dense2,
+        inputs=dense1,
         units=87
     )
 
