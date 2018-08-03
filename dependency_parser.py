@@ -40,7 +40,7 @@ def dependency_parser_model_fn(features, labels, mode):
     dense1 = tf.layers.dense(
         inputs=features["x"],
         units=1024,
-        activation=lambda x: tf.pow(x, tf.constant(3, dtype=tf.float32))
+        activation=lambda x: tf.pow(x, tf.constant(3, dtype=tf.float64))
     )
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
