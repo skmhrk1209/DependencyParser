@@ -292,8 +292,6 @@ def main(unused_argv):
     train_data, train_labels = embed(train_sentences)
     eval_data, eval_labels = embed(eval_sentences)
 
-    print(train_data.shape)
-
     run_config = tf.estimator.RunConfig().replace(
         session_config=tf.ConfigProto(device_count={'GPU': 1}))
 
