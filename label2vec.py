@@ -9,7 +9,7 @@ with open(sys.argv[1]) as file:
 
         line = line.split()
 
-        if line: sentences[-1].append(line[3])
+        if line: sentences[-1].append(line[7])
         
         else: sentences.append([])
 
