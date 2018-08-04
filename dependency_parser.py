@@ -56,7 +56,7 @@ def dependency_parser_model_fn(features, labels, mode):
 
     logits = tf.layers.dense(
         inputs=dense1,
-        units=87
+        units=89
     )
 
     predictions = {
