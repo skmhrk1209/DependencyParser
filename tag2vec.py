@@ -1,7 +1,7 @@
 import sys
 import gensim
 
-tags = [[]]
+sentences = [[]]
 
 with open(sys.argv[1]) as file:
 
@@ -9,17 +9,17 @@ with open(sys.argv[1]) as file:
 
         line = line.split()
 
-        if line: tags[-1].append(line[3])
+        if line: sentences[-1].append(line[3])
         
-        else: tags.append([])
+        else: sentences.append([])
 
 with open("train_tags.txt", 'w') as file:
 
-    for tag in tags:
+    for sentence in sentences:
 
-        file.write(" ".join(tag))
+        file.write(" ".join(sentence))
         file.write("\n")
 
-tags = gensim.models.word2vec.LineSentence("train_tags.txt")
-tag2vec = gensim.models.word2vec.Word2Vec(tags)
+sentences = gensim.models.word2vec.LineSentence("train_tags.txt")
+tag2vec = gensim.models.word2vec.Word2Vec(sentences=sentences, min_count=1)
 tag2vec.save("tag2vec.model")

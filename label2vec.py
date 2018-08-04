@@ -1,7 +1,7 @@
 import sys
 import gensim
 
-labels = [[]]
+sentences = [[]]
 
 with open(sys.argv[1]) as file:
 
@@ -9,17 +9,17 @@ with open(sys.argv[1]) as file:
 
         line = line.split()
 
-        if line: labels[-1].append(line[7])
+        if line: sentences[-1].append(line[3])
         
-        else: labels.append([])
+        else: sentences.append([])
 
 with open("train_labels.txt", 'w') as file:
 
-    for label in labels:
+    for sentence in sentences:
 
-        file.write(" ".join(label))
+        file.write(" ".join(sentence))
         file.write("\n")
 
-labels = gensim.models.word2vec.LineSentence("train_labels.txt")
-label2vec = gensim.models.word2vec.Word2Vec(labels)
+sentences = gensim.models.word2vec.LineSentence("train_labels.txt")
+label2vec = gensim.models.word2vec.Word2Vec(sentences=sentences, min_count=1)
 label2vec.save("label2vec.model")
