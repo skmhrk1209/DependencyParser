@@ -119,46 +119,46 @@ def main(unused_argv):
     word2vec = gensim.models.KeyedVectors.load_word2vec_format("google_word2vec_model.bin", binary=True)
 
     Item = collections.namedtuple("Item", ("index", "word", "tag", "label", "parent", "children"))
-    train_sentences = [[Item(0, "", "", "", -1, [])]]
-    eval_sentences = [[Item(0, "", "", "", -1, [])]]
 
-    with open(args.train_data) as file:
+    def get_sentences(conll_data):
 
-        for line in file:
+        sentences = [[Item(0, "", "", "", -1, [])]]
 
-            line = line.split()
+        with open(conll_data) as file:
 
-            if line:
+            for line in file:
 
-                index, word, _, tag, _, _, parent, label, _, _ = line
-                train_sentences[-1].append(Item(index, word, tag, label, parent, []))
+                line = line.split()
 
-            else:
+                if line:
 
-                train_sentences.append([Item(0, "", "", "", -1, [])])
+                    index, word, _, tag, _, _, parent, label, _, _ = line
+                    sentences[-1].append(Item(index, word, tag, label, parent, []))
 
-    with open(args.eval_data) as file:
+                else:
 
-        for line in file:
+                    sentences.append([Item(0, "", "", "", -1, [])])
 
-            line = line.split()
+        return sentences
 
-            if line:
+    train_sentences = get_sentences(args.train_data)
+    eval_sentences = get_sentences(args.eval_data)
 
-                index, word, _, tag, _, _, parent, label, _, _ = line
-                eval_sentences[-1].append(Item(index, word, tag, label, parent, []))
-
-            else:
-
-                eval_sentences.append([Item(0, "", "", "", -1, [])])
-
-    label_id = {}
-
-    for label in label2vec.vocab:
-
-        label_id[label] = len(label_id)
+    label_id = { label:index for index, label in enumerate(label2vec.vocab) }
 
     def embed(sentences):
+
+        def try_word2vec(word):
+
+            return word2vec[word] if word in word2vec else np.zeros(300)
+
+        def try_tag2vec(tag):
+
+            return tag2vec[tag] if tag in tag2vec else np.zeros(100)
+
+        def try_label2vec(label):
+
+            return label2vec[label] if label in label2vec else np.zeros(100)
 
         data = []
         labels = []
@@ -168,25 +168,12 @@ def main(unused_argv):
             if len(buffer) < 2: continue
 
             stack = []
-
             stack.append(buffer.pop(0))
             stack.append(buffer.pop(0))
 
             while True:
 
                 concat = []
-
-                def try_word2vec(word):
-
-                    return word2vec[word] if word in word2vec else np.zeros(300)
-
-                def try_tag2vec(tag):
-
-                    return tag2vec[tag] if tag in tag2vec else np.zeros(100)
-
-                def try_label2vec(label):
-
-                    return label2vec[label] if label in label2vec else np.zeros(100)
 
                 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                 Sw contains 18 elements
@@ -261,15 +248,15 @@ def main(unused_argv):
                 concat.append(try_label2vec(stack[-2].children[0].children[0].label) if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[0].children) > 0 else np.zeros(100))
                 concat.append(try_label2vec(stack[-2].children[-1].children[-1].label) if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[-1].children) > 0 else np.zeros(100))
 
-                data.append(np.concatenate(concat))
-
                 if len(stack) >= 2 and stack[-1].parent == stack[-2].index:
 
                     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                     RIGHT-ARC (stack[-2] => stack[-1])
                     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+                    data.append(np.concatenate(concat))
                     labels.append(label_id[stack[-1].label] + len(label_id) * 0 + 1)
+
                     stack[-2].children.append(stack.pop(-1))
 
                 elif len(stack) >= 2 and stack[-2].parent == stack[-1].index:
@@ -278,7 +265,9 @@ def main(unused_argv):
                     LEFT-ARC (stack[-2] <= stack[-1])
                     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                     
-                    labels.append(label_id[stack[-1].label] + len(label_id) * 1 + 1)
+                    data.append(np.concatenate(concat))
+                    labels.append(label_id[stack[-2].label] + len(label_id) * 1 + 1)
+
                     stack[-1].children.append(stack.pop(-2))
 
                 else:
@@ -287,9 +276,10 @@ def main(unused_argv):
                     SHIFT
                     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-                    labels.append(0)
-
                     if not buffer: break
+
+                    data.append(np.concatenate(concat))
+                    labels.append(0)
                     
                     stack.append(buffer.pop(0))
 
@@ -297,9 +287,6 @@ def main(unused_argv):
 
     train_data, train_labels = embed(train_sentences)
     eval_data, eval_labels = embed(eval_sentences)
-
-    print(train_data.shape)
-    print(eval_data.shape)
 
     run_config = tf.estimator.RunConfig().replace(
         session_config=tf.ConfigProto(device_count={'GPU': 1}))
