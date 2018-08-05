@@ -9,14 +9,13 @@ import argparse
 import collections
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--data", type=str, help="conll-format data file")
 parser.add_argument("--model", type=str, default="dependency_parser_model", help="model directory")
 parser.add_argument("--batch", type=int, default=100, help="batch size")
 parser.add_argument("--steps", type=int, default=10000, help="training steps")
 parser.add_argument('--train', action="store_true", help='with training')
 parser.add_argument('--eval', action="store_true", help='with evaluation')
 parser.add_argument('--predict', action="store_true", help='with prediction')
-parser.add_argument("--train_data", type=str, default="train.conll", help="training conll-format data")
-parser.add_argument("--eval_data", type=str, default="eval.conll", help="evaluation conll-format data")
 args = parser.parse_args()
 
 tf.logging.set_verbosity(tf.logging.INFO)
@@ -117,6 +116,8 @@ def main(unused_argv):
     tag2vec = gensim.models.word2vec.Word2Vec.load("tag2vec.model").wv
     label2vec = gensim.models.word2vec.Word2Vec.load("label2vec.model").wv
     word2vec = gensim.models.KeyedVectors.load_word2vec_format("google_word2vec_model.bin", binary=True)
+    
+    label_id = { label:index for index, label in enumerate(label2vec.vocab) }
 
     Item = collections.namedtuple("Item", ("index", "word", "tag", "label", "parent", "children"))
 
@@ -141,12 +142,7 @@ def main(unused_argv):
 
         return sentences
 
-    train_sentences = get_sentences(args.train_data)
-    eval_sentences = get_sentences(args.eval_data)
-
-    label_id = { label:index for index, label in enumerate(label2vec.vocab) }
-
-    def embed(sentences):
+    def get_embedded(sentences):
 
         def try_word2vec(word):
 
@@ -285,8 +281,7 @@ def main(unused_argv):
 
         return np.array(data), np.array(labels)
 
-    train_data, train_labels = embed(train_sentences)
-    eval_data, eval_labels = embed(eval_sentences)
+    data, labels = get_embedded(get_sentences(args.data))
 
     run_config = tf.estimator.RunConfig().replace(
         session_config=tf.ConfigProto(device_count={'GPU': 1}))
@@ -300,8 +295,8 @@ def main(unused_argv):
     if args.train:
 
         train_input_fn = tf.estimator.inputs.numpy_input_fn(
-            x={"x": train_data},
-            y=train_labels,
+            x={"x": data},
+            y=labels,
             batch_size=args.batch,
             num_epochs=None,
             shuffle=True
@@ -320,11 +315,11 @@ def main(unused_argv):
             hooks=[logging_hook]
         )
 
-    if args.eval:
+    elif args.eval:
 
         eval_input_fn = tf.estimator.inputs.numpy_input_fn(
-            x={"x": eval_data},
-            y=eval_labels,
+            x={"x": data},
+            y=labels,
             num_epochs=1,
             shuffle=False
         )
