@@ -123,7 +123,8 @@ def main(unused_argv):
 
     def get_sentences(conll_data):
 
-        sentences = [[Item(0, "", "", "", -1, [])]]
+        sentences = []
+        sentences.append([Item(0, "", "", "", -1, [])])
 
         with open(conll_data) as file:
 
@@ -315,7 +316,7 @@ def main(unused_argv):
             hooks=[logging_hook]
         )
 
-    elif args.eval:
+    if args.eval:
 
         eval_input_fn = tf.estimator.inputs.numpy_input_fn(
             x={"x": data},
