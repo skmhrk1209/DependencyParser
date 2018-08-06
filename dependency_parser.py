@@ -6,6 +6,7 @@ import gensim
 import numpy as np
 import tensorflow as tf
 import argparse
+import toolz
 import collections
 
 parser = argparse.ArgumentParser()
