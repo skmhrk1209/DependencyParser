@@ -169,123 +169,123 @@ def main(unused_argv):
                 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                 Sw contains 18 elements
                 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                concat.append(word2vec.get(
-                    stack[-1].word, np.zeros(300)) if len(stack) > 0 else np.zeros(300))
-                concat.append(word2vec.get(
-                    stack[-2].word, np.zeros(300)) if len(stack) > 1 else np.zeros(300))
-                concat.append(word2vec.get(
-                    stack[-3].word, np.zeros(300)) if len(stack) > 2 else np.zeros(300))
+                concat.append(toolz.get(stack[-1].word, word2vec, np.zeros(300))
+                              if len(stack) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-2].word, word2vec, np.zeros(300))
+                              if len(stack) > 1 else np.zeros(300))
+                concat.append(toolz.get(stack[-3].word, word2vec, np.zeros(300))
+                              if len(stack) > 2 else np.zeros(300))
 
-                concat.append(word2vec.get(buffer[0].word, np.zeros(
-                    300)) if len(buffer) > 0 else np.zeros(300))
-                concat.append(word2vec.get(buffer[1].word, np.zeros(
-                    300)) if len(buffer) > 1 else np.zeros(300))
-                concat.append(word2vec.get(buffer[2].word, np.zeros(
-                    300)) if len(buffer) > 2 else np.zeros(300))
+                concat.append(toolz.get(buffer[0].word, word2vec, np.zeros(300))
+                              if len(buffer) > 0 else np.zeros(300))
+                concat.append(toolz.get(buffer[1].word, word2vec, np.zeros(300))
+                              if len(buffer) > 1 else np.zeros(300))
+                concat.append(toolz.get(buffer[2].word, word2vec, np.zeros(300))
+                              if len(buffer) > 2 else np.zeros(300))
 
-                concat.append(word2vec.get(stack[-1].children[0].word, np.zeros(300)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 else np.zeros(300))
-                concat.append(word2vec.get(stack[-1].children[1].word, np.zeros(300)) if len(
-                    stack) > 0 and len(stack[-1].children) > 1 else np.zeros(300))
-                concat.append(word2vec.get(stack[-1].children[-1].word, np.zeros(300)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 else np.zeros(300))
-                concat.append(word2vec.get(stack[-1].children[-2].word, np.zeros(300)) if len(
-                    stack) > 0 and len(stack[-1].children) > 1 else np.zeros(300))
+                concat.append(toolz.get(stack[-1].children[0].word, word2vec, np.zeros(300))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-1].children[1].word, word2vec, np.zeros(300))
+                              if len(stack) > 0 and len(stack[-1].children) > 1 else np.zeros(300))
+                concat.append(toolz.get(stack[-1].children[-1].word, word2vec, np.zeros(300))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-1].children[-2].word, word2vec, np.zeros(300))
+                              if len(stack) > 0 and len(stack[-1].children) > 1 else np.zeros(300))
 
-                concat.append(word2vec.get(stack[-2].children[0].word, np.zeros(300)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 else np.zeros(300))
-                concat.append(word2vec.get(stack[-2].children[1].word, np.zeros(300)) if len(
-                    stack) > 1 and len(stack[-2].children) > 1 else np.zeros(300))
-                concat.append(word2vec.get(stack[-2].children[-1].word, np.zeros(300)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 else np.zeros(300))
-                concat.append(word2vec.get(stack[-2].children[-2].word, np.zeros(300)) if len(
-                    stack) > 1 and len(stack[-2].children) > 1 else np.zeros(300))
+                concat.append(toolz.get(stack[-2].children[0].word, word2vec, np.zeros(300))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-2].children[1].word, word2vec, np.zeros(300))
+                              if len(stack) > 1 and len(stack[-2].children) > 1 else np.zeros(300))
+                concat.append(toolz.get(stack[-2].children[-1].word, word2vec, np.zeros(300))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-2].children[-2].word, word2vec, np.zeros(300))
+                              if len(stack) > 1 and len(stack[-2].children) > 1 else np.zeros(300))
 
-                concat.append(word2vec.get(stack[-1].children[0].children[0].word, np.zeros(300)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[0].children) > 0 else np.zeros(300))
-                concat.append(word2vec.get(stack[-1].children[-1].children[-1].word, np.zeros(300)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[-1].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-1].children[0].children[0].word, word2vec, np.zeros(300))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[0].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-1].children[-1].children[-1].word, word2vec, np.zeros(300))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[-1].children) > 0 else np.zeros(300))
 
-                concat.append(word2vec.get(stack[-2].children[0].children[0].word, np.zeros(300)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[0].children) > 0 else np.zeros(300))
-                concat.append(word2vec.get(stack[-2].children[-1].children[-1].word, np.zeros(300)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[-1].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-2].children[0].children[0].word, word2vec, np.zeros(300))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[0].children) > 0 else np.zeros(300))
+                concat.append(toolz.get(stack[-2].children[-1].children[-1].word, word2vec, np.zeros(300))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[-1].children) > 0 else np.zeros(300))
 
                 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                 St contains 18 elements
                 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                concat.append(tag2vec.get(
-                    stack[-1].tag, np.zeros(100)) if len(stack) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(
-                    stack[-2].tag, np.zeros(100)) if len(stack) > 1 else np.zeros(100))
-                concat.append(tag2vec.get(
-                    stack[-3].tag, np.zeros(100)) if len(stack) > 2 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-3].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 2 else np.zeros(100))
 
-                concat.append(tag2vec.get(buffer[0].tag, np.zeros(
-                    100)) if len(buffer) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(buffer[1].tag, np.zeros(
-                    100)) if len(buffer) > 1 else np.zeros(100))
-                concat.append(tag2vec.get(buffer[2].tag, np.zeros(
-                    100)) if len(buffer) > 2 else np.zeros(100))
+                concat.append(toolz.get(buffer[0].tag, tag2vec, np.zeros(100))
+                              if len(buffer) > 0 else np.zeros(100))
+                concat.append(toolz.get(buffer[1].tag, tag2vec, np.zeros(100))
+                              if len(buffer) > 1 else np.zeros(100))
+                concat.append(toolz.get(buffer[2].tag, tag2vec, np.zeros(100))
+                              if len(buffer) > 2 else np.zeros(100))
 
-                concat.append(tag2vec.get(stack[-1].children[0].tag, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-1].children[1].tag, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-1].children[-1].tag, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-1].children[-2].tag, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[0].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[1].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[-1].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[-2].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
 
-                concat.append(tag2vec.get(stack[-2].children[0].tag, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-2].children[1].tag, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-2].children[-1].tag, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-2].children[-2].tag, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[0].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[1].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[-1].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[-2].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
 
-                concat.append(tag2vec.get(stack[-1].children[0].children[0].tag, np.zeros(100)) if len(stack) > 0 and len(
-                    stack[-1].children) > 0 and len(stack[-1].children[0].children) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-1].children[-1].children[-1].tag, np.zeros(100)) if len(stack) > 0 and len(
-                    stack[-1].children) > 0 and len(stack[-1].children[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[0].children[0].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[0].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[-1].children[-1].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[-1].children) > 0 else np.zeros(100))
 
-                concat.append(tag2vec.get(stack[-2].children[0].children[0].tag, np.zeros(100)) if len(stack) > 1 and len(
-                    stack[-2].children) > 0 and len(stack[-2].children[0].children) > 0 else np.zeros(100))
-                concat.append(tag2vec.get(stack[-2].children[-1].children[-1].tag, np.zeros(100)) if len(stack) > 1 and len(
-                    stack[-2].children) > 0 and len(stack[-2].children[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[0].children[0].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[0].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[-1].children[-1].tag, tag2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[-1].children) > 0 else np.zeros(100))
 
                 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                 Sl contains 12 elements
                 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                concat.append(label2vec.get(stack[-1].children[0].label, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
-                concat.append(label2vec.get(stack[-1].children[1].label, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
-                concat.append(label2vec.get(stack[-1].children[-1].label, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
-                concat.append(label2vec.get(stack[-1].children[-2].label, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[0].label, label2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[1].label, label2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[-1].label, label2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[-2].label, label2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 1 else np.zeros(100))
 
-                concat.append(label2vec.get(stack[-2].children[0].label, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
-                concat.append(label2vec.get(stack[-2].children[1].label, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
-                concat.append(label2vec.get(stack[-2].children[-1].label, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
-                concat.append(label2vec.get(stack[-2].children[-2].label, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[0].label, label2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[1].label, label2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[-1].label, label2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[-2].label, label2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 1 else np.zeros(100))
 
-                concat.append(label2vec.get(stack[-1].children[0].children[0].label, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[0].children) > 0 else np.zeros(100))
-                concat.append(label2vec.get(stack[-1].children[-1].children[-1].label, np.zeros(100)) if len(
-                    stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[0].children[0].label, label2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[0].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-1].children[-1].children[-1].label, label2vec, np.zeros(100))
+                              if len(stack) > 0 and len(stack[-1].children) > 0 and len(stack[-1].children[-1].children) > 0 else np.zeros(100))
 
-                concat.append(label2vec.get(stack[-2].children[0].children[0].label, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[0].children) > 0 else np.zeros(100))
-                concat.append(label2vec.get(stack[-2].children[-1].children[-1].label, np.zeros(100)) if len(
-                    stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[-1].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[0].children[0].label, label2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[0].children) > 0 else np.zeros(100))
+                concat.append(toolz.get(stack[-2].children[-1].children[-1].label, label2vec, np.zeros(100))
+                              if len(stack) > 1 and len(stack[-2].children) > 0 and len(stack[-2].children[-1].children) > 0 else np.zeros(100))
 
                 if len(stack) >= 2 and stack[-1].parent == stack[-2].index:
 
